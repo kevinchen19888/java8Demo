@@ -9,10 +9,12 @@ import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.*;
 
@@ -75,12 +77,13 @@ public class CollectorTest {
                     return CaloriesLevel.DIET;
                 })));
 //        System.out.println(mutiGroupList);
-        // 分组,然后再对分组中数据进行归约并返回最大值
+        // 分组,然后再对分组中数据进行归约并返回每一组的最大值
         Map<Dish.Type, Dish> groupMaxList = menuList
                 .stream()
                 .collect(groupingBy(d -> d.getType(),
                         collectingAndThen(maxBy(comparingInt(Dish::getCalories)), Optional::get)));
 //        System.out.println(groupMaxList);
+
         // 查看各分组中都有哪些类型的calories
         Map<Dish.Type, Set<CaloriesLevel>> setMap = menuList.stream()
                 .collect(groupingBy(Dish::getType, mapping(d -> {
@@ -106,7 +109,7 @@ public class CollectorTest {
                 .collect(partitioningBy(Dish::isVegetarian, groupingBy(Dish::getType)));
 //        System.out.println(booleanListMap);
 //        System.out.println(multiBooleanMap);
-        List<Dish> dishList = menuList.stream().filter(d -> d.getCalories() > 500).collect(new ToListCollector<Dish>());
+        List<Dish> dishList = menuList.stream().filter(d -> d.getCalories() > 500).collect(new ToListCollector<>());
 //        System.out.println(dishList);
         // 并行累加
         long sum = Stream.iterate(1L, i -> i + 1).limit(10).parallel().mapToLong(Long::longValue).sum();
@@ -122,8 +125,14 @@ public class CollectorTest {
         Map<Boolean, List<Integer>> primeMap = IntStream
                 .rangeClosed(2, 20).boxed()
                 .collect(partitioningBy(this::isPrime));
-        System.out.println(primeMap);
+//        System.out.println(primeMap);
 
+        String dishJoinName = (String) menuList.stream()
+                .sorted(comparing(com.stream.Dish::getCalories))
+                .map(com.stream.Dish::getName)
+                .collect(Collectors.joining(","));
+
+        System.out.println(dishJoinName);
     }
 
     /**串并行流执行数值累加的时间对比
@@ -157,7 +166,6 @@ public class CollectorTest {
     public void test8(){
         char s=' ';
         System.out.println(Character.isWhitespace(s));
-
     }
 
     @Test
