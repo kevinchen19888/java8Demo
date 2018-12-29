@@ -51,7 +51,7 @@ public class CollectorTest {
         Optional<Dish> maxR = menuList.stream()
                 .collect(reducing((a1, a2) -> a1.getCalories() > a2.getCalories() ? a1 : a2));
 //        System.out.println(bSum);
-        System.out.println(maxR);
+//        System.out.println(maxR);
 //        System.out.println(sumStatistics);
 //        System.out.println(max.get());
 //        System.out.println(joinNames);

@@ -134,8 +134,6 @@ public class SteamTest {
 //        System.out.println(min.orElse(0));
         long count = IntStream.rangeClosed(1, 100).filter(i -> i % 2 == 0).count();//数值范围流
         System.out.println(count);
-
-
     }
 
     /**
