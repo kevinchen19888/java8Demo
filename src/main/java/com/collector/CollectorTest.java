@@ -31,6 +31,7 @@ public class CollectorTest {
             new Dish("chicken", false, 500, Dish.Type.MEAT),
             new Dish("french", true, 200, Dish.Type.OTHERS),
             new Dish("rice", true, 300, Dish.Type.OTHERS)
+
     );
 
     /**
