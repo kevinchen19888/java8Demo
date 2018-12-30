@@ -3,7 +3,6 @@ package com.collector;
 public class JoinTest {
     // GitHub update 1rd
     public static void main(String[] args) {
-        // idea local update
         System.out.println("main start");
         Thread t1 = new Thread(new Worker("thread-1"));
         Thread t2 = new Thread(new Worker("thread-2"));
