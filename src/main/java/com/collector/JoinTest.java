@@ -1,6 +1,7 @@
 package com.collector;
 
 public class JoinTest {
+    // GitHub update 1rd
     public static void main(String[] args) {
         System.out.println("main start");
         Thread t1 = new Thread(new Worker("thread-1"));
