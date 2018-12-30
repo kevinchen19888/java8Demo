@@ -2,6 +2,7 @@ package com.collector;
 
 public class JoinTest {
     public static void main(String[] args) {
+        // idea local update
         System.out.println("main start");
 
         Thread t1 = new Thread(new Worker("thread-1"));
