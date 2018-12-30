@@ -4,10 +4,8 @@ public class JoinTest {
     public static void main(String[] args) {
         // idea local update
         System.out.println("main start");
-
         Thread t1 = new Thread(new Worker("thread-1"));
         Thread t2 = new Thread(new Worker("thread-2"));
-
         try {
             t1.start();
             t2.start();
@@ -17,7 +15,6 @@ public class JoinTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         System.out.println("main end");
     }
 }
