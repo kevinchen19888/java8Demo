@@ -41,22 +41,23 @@ public class CollectorTest {
     public void test1() {
         Map<Dish.Type, List<Dish>> collect = menuList.stream().collect(groupingBy(d -> d.getType()));
 //        System.out.println(collect);
-        Comparator<Dish> comparingInt = comparingInt(Dish::getCalories);
-        Optional<Dish> max = menuList.stream().collect(maxBy(comparingInt));
+        Optional<Dish> max = menuList.stream().collect(maxBy(comparingInt(Dish::getCalories)));
         Integer sum = menuList.stream().collect(summingInt(Dish::getCalories));
         IntSummaryStatistics sumStatistics = menuList.stream().collect(summarizingInt(Dish::getCalories));
+        System.out.println(sumStatistics.getMax());
         // 连接字符串
         String joinNames = menuList.stream().map(Dish::getName).collect(joining(", "));
         // 广义归约汇总
-        Integer bSum = menuList.stream().collect(reducing(0, Dish::getCalories, (i, j) -> i + j));
+        Integer bSum = menuList.stream()
+                .collect(reducing(0, Dish::getCalories, (i, j) -> i + j));
         Optional<Dish> maxR = menuList.stream()
                 .collect(reducing((a1, a2) -> a1.getCalories() > a2.getCalories() ? a1 : a2));
-//        System.out.println(bSum);
 //        System.out.println(maxR);
 //        System.out.println(sumStatistics);
 //        System.out.println(max.get());
 //        System.out.println(joinNames);
 //        System.out.println(sum);
+//        System.out.println(bSum);
 
         // bug 分支test
     }
@@ -65,11 +66,13 @@ public class CollectorTest {
      * 使用收集器进行多级分组
      */
     @Test
+    @SuppressWarnings("all")
     public void test2() {
         // 先对menuList按Type进行一级分组,然后再按calories大小进行二级分组
         Map<Dish.Type, Map<CaloriesLevel, List<Dish>>> mutiGroupList = menuList
                 .stream()
-                .collect(groupingBy(d -> d.getType(), groupingBy(d -> {
+                .collect(groupingBy(d -> d.getType(),
+                        groupingBy(d -> {
                     if (d.getCalories() > 500) {
                         return CaloriesLevel.FAT;
                     }
@@ -84,8 +87,8 @@ public class CollectorTest {
                 .stream()
                 .collect(groupingBy(d -> d.getType(),
                         collectingAndThen(maxBy(comparingInt(Dish::getCalories)), Optional::get)));
-//        System.out.println(groupMaxList);
 
+//        System.out.println(groupMaxList);
         // 查看各分组中都有哪些类型的calories
         Map<Dish.Type, Set<CaloriesLevel>> setMap = menuList.stream()
                 .collect(groupingBy(Dish::getType, mapping(d -> {
@@ -105,17 +108,38 @@ public class CollectorTest {
      */
     @Test
     public void test3() {
-        Map<Boolean, List<Dish>> booleanListMap = menuList.stream()
-                .collect(partitioningBy(Dish::isVegetarian));
+        Map<Boolean, List<Dish>> booleanListMap = menuList.stream().collect(partitioningBy(Dish::isVegetarian));
+
         Map<Boolean, Map<Dish.Type, List<Dish>>> multiBooleanMap = menuList.stream()
                 .collect(partitioningBy(Dish::isVegetarian, groupingBy(Dish::getType)));
 //        System.out.println(booleanListMap);
 //        System.out.println(multiBooleanMap);
+        // 通过自定义收集器进行收集
         List<Dish> dishList = menuList.stream().filter(d -> d.getCalories() > 500).collect(new ToListCollector<>());
 //        System.out.println(dishList);
+
         // 并行累加
         long sum = Stream.iterate(1L, i -> i + 1).limit(10).parallel().mapToLong(Long::longValue).sum();
         System.out.println(sum);
+    }
+
+    @Test
+    public void test23(){
+        Map<Dish.Type, Map<CaloriesLevel, List<Dish>>> collect = menuList.stream()
+                .collect(groupingBy(a -> a.getType(), groupingBy(a -> {
+                    if (a.getCalories() < 500) {
+                        return CaloriesLevel.DIET;
+                    }
+                    return CaloriesLevel.FAT;
+                })));
+        // 找出menuList最大calories值
+        Integer max = menuList.stream().collect(collectingAndThen(summarizingInt(a -> a.getCalories()), a -> a.getMax()));
+//        Dish maxDish = menuList.stream().limit(5).collect(collectingAndThen(reducing((a, b) -> a.getCalories() > b.getCalories() ? a : b), Optional::get));
+        menuList.stream().limit(5).collect(reducing((a, b) -> a.getCalories() > b.getCalories() ? a : b));
+        String allNum = menuList.stream().collect(mapping(a -> a.getCalories() + "", joining(",")));
+        System.out.println(allNum);
+//        System.out.println(maxDish);
+
     }
 
     /**
