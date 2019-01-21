@@ -234,6 +234,9 @@ public class CollectorTest {
 //                Stream.iterate(1L,i->i+1)
                 .limit(n)
                 .reduce(0L,Long::sum);
+        
+        
+        
     }
 
     /**并行版累加
