@@ -58,6 +58,7 @@ public class CollectorTest {
 //        System.out.println(joinNames);
 //        System.out.println(sum);
 
+        // bug 分支test
     }
 
     /**
