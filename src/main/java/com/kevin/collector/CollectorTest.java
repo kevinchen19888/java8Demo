@@ -1,6 +1,6 @@
-package com.collector;
+package com.kevin.collector;
 
-import com.stream.Dish;
+import com.kevin.stream.Dish;
 import lambdasinaction.chap7.ForkJoinSumCalculator;
 import lambdasinaction.chap7.ParallelStreams;
 import org.junit.Test;
@@ -129,8 +129,8 @@ public class CollectorTest {
 //        System.out.println(primeMap);
 
         String dishJoinName = (String) menuList.stream()
-                .sorted(comparing(com.stream.Dish::getCalories))
-                .map(com.stream.Dish::getName)
+                .sorted(comparing(Dish::getCalories))
+                .map(Dish::getName)
                 .collect(Collectors.joining(","));
 
         System.out.println(dishJoinName);

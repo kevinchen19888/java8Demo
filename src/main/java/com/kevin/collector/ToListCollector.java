@@ -1,4 +1,4 @@
-package com.collector;
+package com.kevin.collector;
 
 import java.util.*;
 import java.util.function.BiConsumer;

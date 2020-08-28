@@ -1,4 +1,4 @@
-package com.stream;
+package com.kevin.stream;
 
 import org.junit.Test;
 
@@ -34,12 +34,12 @@ public class SteamTest {
         // 3将菜单转换为对应的菜单名,4.取前3项
         List<String> dishList = menuList.stream()
                 .filter(d -> {
-//                    System.out.println("filter:" + d.getName());
+                    //System.out.println("filter:" + d.getName());
                     return d.getCalories() < 500;
                 })
                 .sorted(Comparator.comparing(Dish::getCalories))
                 .map(d -> {
-//                    System.out.println("map:" + d.getName());
+                    //System.out.println("map:" + d.getName());
                     return d.getName();
                 })
                 .limit(3)
@@ -141,7 +141,7 @@ public class SteamTest {
      */
     @Test
     public void test5() {
-        Integer reduce = Stream.of("kevin", "james", "jane")
+        Integer reduce = Stream.of("com/kevin", "james", "jane")
                 .map(s -> s.length())
                 .reduce(0, (a, b) -> a + b);
         System.out.println(reduce);

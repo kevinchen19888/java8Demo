@@ -1,4 +1,4 @@
-package com.stream;
+package com.kevin.stream;
 
 public class Dish {
     private final String name;

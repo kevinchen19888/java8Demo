@@ -1,4 +1,4 @@
-package com.collector;
+package com.kevin.collector;
 
 public class JoinTest {
     // GitHub update 1rd
